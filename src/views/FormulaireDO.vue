@@ -146,7 +146,7 @@
                 :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
                 d'activité</label>
               <select id="activitySector" v-model="dataToSendToAPI.activitySector"
-                @change="validateSelect(dataToSendToAPI.activitySector, 'activitySector')"
+                @change="validateSelect(dataToSendToAPI.activitySector.name, 'activitySector')"
                 class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
                 <option v-for="sector in allActivitySectorsResults" :key="sector.id" :value="sector.id">{{ sector.name
@@ -156,6 +156,8 @@
       fieldsToValidate.activitySector }}</span>
             </div>
           </div>
+
+          <!-- @change="handleSectorActivitieChange" -->
 
           <!-- CHAMP VILLE POUR LES DEMANDES -->
           <div class="py-2">
@@ -563,7 +565,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`http://localhost:3859/internship-requests/${id.value}`);
+        const response = await axios.get(`http://localhost:14114/internship-requests/${id.value}`);
 
         const data = response.data;
         console.log(data)
@@ -619,7 +621,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`http://localhost:3859/internship-offers/${id.value}`);
+        const response = await axios.get(`http://localhost:14114/internship-offers/${id.value}`);
 
         const data = response.data;
         console.log(data);
@@ -673,6 +675,7 @@ let selectedCandidate = ref(null);
 let selectedProvince = ref(null);
 let selectedInternshipType = ref(null);
 let selectedEnterprise = ref(null);
+let selectedSectorActivitie = ref(null);
 
 // // Fonction pour récupérer l'identifiant et la valeur des candidats
 const handleCandidateChange = (event) => {
@@ -686,6 +689,20 @@ const handleCandidateChange = (event) => {
     console.error('Candidate not found in allCandidatesResults');
   }
 };
+
+// Fonction pour récupérer l'identifiant et la valeur du secteur sélectionné
+// const handleSectorActivitieChange = (event) => {
+//   const selectedSectorId = Number(event.target.value); // ID sélectionné dans le <select>
+
+//   const selectedSectorObj = allActivitySectorsResults.find(sector => sector.id === selectedSectorId);
+
+//   if (selectedSectorObj) {
+//     selectedSectorActivitie.value = selectedSectorObj;
+//     dataToSendToAPI.activitySector = selectedSectorId; // Enregistre l'ID si besoin
+//   } else {
+//     console.error('Secteur d\'activité non trouvé dans allActivitySectorsResults');
+//   }
+// };
 
 // Fonction pour récupérer l'identifiant et la valeur des provinces
 const handleProvinceChange = (event) => {
@@ -746,7 +763,7 @@ const submitForm = (event) => {
 // Fonction pour envoyer les données du formulaire 
 const sendRequest = async (formData) => {
   try {
-    const baseUrl = 'http://localhost:11091';
+    const baseUrl = 'http://localhost:14114';
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
@@ -758,43 +775,31 @@ const sendRequest = async (formData) => {
   }
 };
 
+
 const handleDataRequest = async () => {
   if (selectedCandidate.value) {
     const formDataRequest = {
-      title: dataToSendToAPI.title,
-      description: dataToSendToAPI.description,
-      candidate: {
-        id: selectedCandidate.value.id,
-        firstName: selectedCandidate.value.firstName,
-        lastName: selectedCandidate.value.lastName,
-        email: selectedCandidate.value.email,
-        description: selectedCandidate.value.description || "",
-        address: selectedCandidate.value.address,
-        phone: selectedCandidate.value.phone,
-        city: selectedCandidate.value.city,
-        postalCode: selectedCandidate.value.postalCode,
-        province: {
-          id: selectedProvince.value.id,
-          name: selectedProvince.value.name
-        }
-      },
-      startDate: new Date(dataToSendToAPI.startDate).toISOString(),
-      endDate: new Date(dataToSendToAPI.endDate).toISOString(),
-      weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
-      skills: dataToSendToAPI.skills || "",
-      internshipType: {
-        id: selectedInternshipType.value.id,
-        name: selectedInternshipType.value.name
-      },
-      sector: dataToSendToAPI.activitySector,
-      // additionalInformation: dataToSendToAPI.additionalInformation || "",
-      isActive: !isAdding.value
-    };
-
+  title: dataToSendToAPI.title,
+  startDate: dataToSendToAPI.startDate,
+  endDate: dataToSendToAPI.endDate,
+  weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
+  skills: dataToSendToAPI.skills.split(',').map(s => s.trim()), // transforme string → array
+  activity_sector_name: dataToSendToAPI.activitySector.name || '',
+  // activity_sector_name: selectedSector?.name || '',
+  internship_type_name: selectedInternshipType.value.name,
+  candidate: {
+    firstName: selectedCandidate.value.firstName,
+    lastName: selectedCandidate.value.lastName,
+    description: selectedCandidate.value.description || "",
+    city: selectedCandidate.value.city,
+    province_name: selectedProvince.value.name // nom
+}
+    }
     await sendRequest(formDataRequest);
     console.log("Demande envoyée :", formDataRequest);
   } else {
     console.error('Selected candidate is not valid');
+    console.log('activitySector =', dataToSendToAPI.activitySector);
   }
 };
 

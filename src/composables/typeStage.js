@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 import axios from 'axios';
 
-const baseUrl = "http://localhost:3859/";
+const baseUrl = "http://localhost:13446/";
 
 // https://api-4.fly.dev/internship-types
 export function useIntershipTypes() {

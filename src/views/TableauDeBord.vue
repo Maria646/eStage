@@ -105,7 +105,7 @@ let enterprisesCount = ref(null);
 let demandeDeStageIsNotActive = reactive([]);
 let offreDeStagesIsNotActive = reactive([]);
 
-const baseUrl = "http://localhost:13017/";
+const baseUrl = "http://localhost:13446/";
 const intershipRequests = "internship-requests/";
 const intershipOffers = "internship-offers/";
 const candidates = "candidates/";
