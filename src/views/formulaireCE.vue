@@ -739,8 +739,8 @@
 
                         try {
                             const url = editing.value ?
-                                `http://localhost:3859/candidates/${id.value}` :
-                                'http://localhost:3859/candidates';
+                                `https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/candidates/${id.value}` :
+                                'https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/candidates';
 
                             const method = editing.value ? 'PATCH' : 'post';
 
@@ -772,7 +772,7 @@
                         try {
                             let activitySector = null;
                             const activitySectorsResponse = await axios.get(
-                                'http://localhost:3859/utilities/activity-sectors');
+                                'https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/utilities/activity-sectors');
                             const activitySectors = activitySectorsResponse.data;
                             activitySectors.forEach((activity) => {
                                 if (activity.value === formData.activitySector.value) {
@@ -785,8 +785,8 @@
                             }
 
                             const url = editing.value ?
-                                `http://localhost:3859/entreprises/${id.value}` :
-                                'http://localhost:3859/entreprises';
+                                `https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/entreprises/${id.value}` :
+                                'https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/entreprises';
 
                             const method = editing.value ? 'PATCH' : 'post';
 
@@ -848,7 +848,7 @@
             const provinces = ref([])
             const fetchProvinces = async () => {
                 try {
-                    const response = await axios.get('http://localhost:3859/utilities/provinces')
+                    const response = await axios.get('https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/utilities/provinces')
                     provinces.value = response.data
                 } catch (error) {
                     console.error(error)
@@ -862,9 +862,9 @@
                 try {
                     let url;
                     if (type === 'entreprises') {
-                        url = `http://localhost:3859/entreprises/${id}`;
+                        url = `https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/entreprises/${id}`;
                     } else if (type === 'candidats') {
-                        url = `http://localhost:3859/candidates/${id}`;
+                        url = `https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/candidates/${id}`;
                     }
                     const response = await axios.get(url);
                     const data = response.data;

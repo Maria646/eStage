@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "http://localhost:8908/";
+const baseUrl = "https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/";
 
 
 export function useActivateIntership() {

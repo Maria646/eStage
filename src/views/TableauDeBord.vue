@@ -105,7 +105,7 @@ let enterprisesCount = ref(null);
 let demandeDeStageIsNotActive = reactive([]);
 let offreDeStagesIsNotActive = reactive([]);
 
-const baseUrl = "https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com/";
+const baseUrl = "https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/";
 const intershipRequests = "internship-requests/";
 const intershipOffers = "internship-offers/";
 const candidates = "candidates/";

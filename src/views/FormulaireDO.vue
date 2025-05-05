@@ -565,7 +565,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com/${id.value}`);
+        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/${id.value}`);
 
         const data = response.data;
 
@@ -625,7 +625,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com/${id.value}`);
+        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/${id.value}`);
 
         const data = response.data;
         console.log(data);
@@ -767,7 +767,7 @@ const submitForm = (event) => {
 // Fonction pour envoyer les données du formulaire 
 const sendRequest = async (formData) => {
   try {
-    const baseUrl = 'https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com';
+    const baseUrl = 'https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com';
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
