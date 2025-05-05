@@ -40,13 +40,13 @@
           <div class="border-l-8 border-neutral-500 mb-8">
             <h5 v-if="isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Programme de formation</h5>
             <h5 v-if="!isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Formations demandées</h5>
-            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{  }}</p>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Diplôme d'études collégiales</p>
             <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Diplôme d'études collégiales ou équivalent</p>
           </div>
           <div class="border-l-8 border-neutral-500" :class="{'mb-8': isFicheDetailDemandeDeStage }">
             <h5 v-if="isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Secteur d'activité</h5>
             <h5 v-if="!isFicheDetailDemandeDeStage" class="text-lg font-bold text-neutral-500 mb-3 ml-2">Exigences</h5>
-            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">Nouvelles technologies de l'information</p>
+            <p v-if="isFicheDetailDemandeDeStage" class="text-neutral-500 text-sm ml-2">{{demandeDeStageResult.candidate.activitySector.name }}</p>
             <p v-if="!isFicheDetailDemandeDeStage" class="text-neutral-500 mb-5 ml-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Error a nostrum modi, maiores voluptates recusandae
               odit dolorum iure exercitationem aperiam velit ipsam saepe. Ad praesentium sunt reprehenderit, perspiciatis
               cumque aut commodi unde quod mollitia laudantium vitae iure eaque, voluptas rem nesciunt labore, culpa illum
@@ -60,7 +60,7 @@
           </div>
           <div v-if="isFicheDetailDemandeDeStage" class="border-l-8 border-neutral-500">
             <h5 class="text-lg font-bold text-neutral-500 mb-3 ml-2">Compétences</h5>
-            <p class="text-neutral-500 text-sm ml-2">{{ }}</p>
+            <p class="text-neutral-500 text-sm ml-2">{{demandeDeStageResult.skills }}</p>
           </div>
         </div>
         <div>
@@ -170,22 +170,25 @@
     
   // Configuration de l'affichage des informations detaillées selon l'identifiant
   onMounted(async () => {
-    const urlString = window.location.href;
-    elementId = route.params.id;
+  const urlString = window.location.href;
+  elementId = route.params.id;
 
-    if (urlString.includes("pagedetaildemandedestage")) {
-      isFicheDetailDemandeDeStage.value = true;
-      elementASupprimer.value = 'internship-requests';
-/*       demandeDeStageId = route.params.id; */
-      await getDemandeDeStagesById(elementId);
+  if (urlString.includes("pagedetaildemandedestage")) {
+    isFicheDetailDemandeDeStage.value = true;
+    elementASupprimer.value = 'internship-requests';
 
-    } else if (urlString.includes("pagedetailoffredestage")) {
-      isFicheDetailDemandeDeStage.value = false;
-      elementASupprimer.value = 'internship-offers';
-/*       offreDeStageId = route.params.id; */
-      await getOffreDeStageById(elementId);
-    }
-  });
+    await getDemandeDeStagesById(elementId);
+    console.log("Détails de la demande de stage :", demandeDeStageResult.value);
+
+  } else if (urlString.includes("pagedetailoffredestage")) {
+    isFicheDetailDemandeDeStage.value = false;
+    elementASupprimer.value = 'internship-offers';
+
+    await getOffreDeStageById(elementId);
+    console.log("Détails de l’offre de stage :", offreDeStagesResult.value);
+  }
+});
+
 
   // Configuration de l'icône pour editer un formulaire
   const goToEditForm = () => {

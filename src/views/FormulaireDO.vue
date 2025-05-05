@@ -112,7 +112,7 @@
         </div>
 
         <!-- CHAMP PROGRAMME DE FORMATION  POUR LES DEMANDES ET OFFRES  -->
-        <div v-if="isRequest" class="grid grid-cols-2 gap-4">
+        <!-- <div v-if="isRequest" class="grid grid-cols-2 gap-4">
           <div class="py-2">
             <div class="border-l-4 border-gray-800 pl-2 m-2">
               <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
@@ -121,12 +121,13 @@
                 class="border border-gray-300 p-2 w-full rounded mt-1   focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
-      fieldsToValidate.programme }}</span>
+                fieldsToValidate.programme }}</span>
             </div>
           </div>
+        </div> -->
 
           <!-- CHAMP ÉTABLISSEMENT  POUR LES DEMANDES  -->
-          <div class="py-2">
+          <!-- <div class="py-2">
             <div v-if="isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
               <label for="etablissement" class="text-sm font-bold text-neutral-500 block">Établissement
                 scolaire</label>
@@ -137,7 +138,7 @@
               <span v-if="fieldsToValidate.etablissement !== ''" class="text-xs font-semibold text-red-700 p-2">{{
       fieldsToValidate.etablissement }}</span>
             </div>
-          </div>
+          </div> -->
 
           <!-- CHAMP SECTEUR D'ACTIVITÉS POUR LES DEMANDES -->
           <div class="py-2">
@@ -146,10 +147,10 @@
                 :class="{ 'hover:bg-teal-100': isRequest, 'hover:bg-red-100': !isRequest }">Secteur
                 d'activité</label>
               <select id="activitySector" v-model="dataToSendToAPI.activitySector"
-                @change="validateSelect(dataToSendToAPI.activitySector.name, 'activitySector')"
+                @change="validateSelect(dataToSendToAPI.activitySector, 'activitySector')"
                 class="border border-gray-300 p-2 w-full rounded mt-1 focus:bg-white"
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
-                <option v-for="sector in allActivitySectorsResults" :key="sector.id" :value="sector.id">{{ sector.name
+                <option v-for="sector in allActivitySectorsResults" :key="sector.id" :value="sector">{{ sector.name
                   }}</option>
               </select>
               <span v-if="fieldsToValidate.activitySector !== ''" class="p-2 text-xs font-semibold text-red-700">{{
@@ -189,7 +190,7 @@
         </div>
 
         <!-- CHAMP PROGRAMME DE FORMATION POUR LES OFFRES -->
-        <div v-if="!isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
+        <!-- <div v-if="!isRequest" class="border-l-4 border-gray-800 pl-2 m-2">
           <label for="programme" class="text-sm font-bold text-neutral-500 block">Programme de formation</label>
           <input id="programme" v-model="dataToSendToAPI.programme"
             @input="validateInput(dataToSendToAPI.programme, 'programme')" type="text"
@@ -197,10 +198,10 @@
             :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
           <span v-if="fieldsToValidate.programme !== ''" class="text-xs font-semibold text-red-700 p-2">{{
       fieldsToValidate.programme }}</span>
-        </div>
+        </div> -->
 
         <!-- CHAMP EXIGENCES POUR LES OFFRES -->
-        <div class="py-2">
+        <!-- <div class="py-2">
           <div v-if="!isRequest" class="grid grid-cols-1 border-l-4 border-gray-800 pl-2 m-2">
             <label for="requiredSkills" class="text-sm font-bold text-neutral-500 block">Exigences</label>
             <textarea id="requiredSkills" v-model="dataToSendToAPI.requiredSkills"
@@ -210,7 +211,7 @@
             <span v-if="fieldsToValidate.requiredSkills !== ''" class="p-2 text-xs font-semibold text-red-700">{{
       fieldsToValidate.requiredSkills }}</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- CHAMP COMPÉTENCES POUR LES DEMANDES -->
         <div class="py-2">
@@ -280,12 +281,11 @@
                 :class="{ 'hover:bg-yellow-100': isRequest, 'hover:bg-red-100': !isRequest }">
               <span v-if="fieldsToValidate.endDate !== ''" class="p-2 text-xs font-semibold text-red-700">{{
       fieldsToValidate.endDate }}</span>
-            </div>
           </div>
         </div>
 
         <!-- CHAMP RÉNUMÉRATION POUR LES DEMANDES ET LES OFFRES -->
-        <div class="py-2">
+        <!-- <div class="py-2">
           <div class="border-l-4 border-gray-800 pl-2 m-2">
             <label class="text-sm font-bold text-neutral-500 block mb-2">Rémunération</label>
             <input id="discretionary" v-model="dataToSendToAPI.paid"
@@ -303,7 +303,7 @@
             <span v-if="fieldsToValidate.paid !== ''" class="p-2 text-xs font-semibold text-red-700">{{
       fieldsToValidate.paid }}</span>
           </div>
-        </div>
+        </div> -->
 
         <!-- CHAMP INFORMATION SUPPLÉMENTAIRES POUR LES DEMANDES ET LES OFFRES -->
         <!-- <div class="py-2">
@@ -565,10 +565,12 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`http://localhost:14114/internship-requests/${id.value}`);
+        const response = await axios.get(`https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com/${id.value}`);
 
         const data = response.data;
+
         console.log(data)
+
         if (data.candidate) {
           selectedCandidate.value = data.candidate;
           dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
@@ -580,14 +582,14 @@ onMounted(async () => {
         }
 
         if (data.candidate.province) {
-          selectedProvince.value = data.province;
-          dataToSendToAPI.province = data.candidate.province.id;
+          selectedProvince.value = data.candidate.province.name;
+          dataToSendToAPI.province = data.candidate.province.name;
         } else {
           console.error('Province data is missing in the API response');
         }
 
-        if (data.candidate.internshipType) {
-          selectedInternshipType.value = data.internshipType;
+        if (data.internshipType) {
+          selectedInternshipType.value = data.candidate.internshipType.name;
           dataToSendToAPI.internshipType = data.candidate.internshipType.name;
         }
 
@@ -596,15 +598,17 @@ onMounted(async () => {
           description: data.candidate.description,
           startDate: new Date(data.startDate).toISOString().slice(0, 10),
           endDate: new Date(data.endDate).toISOString().slice(0, 10),
-          weeklyWorkHours: data.weeklyWorkHours
+          weeklyWorkHours: data.weeklyWorkHours,
+          skills : data.skills,
+          activitySector: data.candidate.activitySector.name
           // paid: data.paid,
           // additionalInformation: data.additionalInformation,
 
         });
 
         dataToSendToAPI.candidateName = `${data.candidate.firstName} ${data.candidate.lastName}`;
+        dataToSendToAPI.description = `${data.candidate.description}`;
         dataToSendToAPI.city = data.candidate.city;
-        dataToSendToAPI.skills = data.skills;
 
       } catch (error) {
         console.error('Error fetching request data:', error);
@@ -621,7 +625,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`http://localhost:14114/internship-offers/${id.value}`);
+        const response = await axios.get(`https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com/${id.value}`);
 
         const data = response.data;
         console.log(data);
@@ -636,15 +640,15 @@ onMounted(async () => {
 
 
         if (data.province) {
-          selectedProvince.value = data.province;
-          dataToSendToAPI.province = data.province.id;
+          selectedProvince.value = data.entreprise.province_name;
+          dataToSendToAPI.province = data.entreprise.province_name;
         } else {
           console.error('Province data is missing in the API response');
         }
 
         if (data.internshipType) {
-          selectedInternshipType.value = data.internshipType;
-          dataToSendToAPI.internshipType = data.internshipType.id;
+          selectedInternshipType.value = data.internship_type_name;
+          dataToSendToAPI.internshipType = data.internship_type_name;
         }
 
 
@@ -654,8 +658,8 @@ onMounted(async () => {
           startDate: new Date(data.startDate).toISOString().slice(0, 10),
           endDate: new Date(data.endDate).toISOString().slice(0, 10),
           weeklyWorkHours: data.weeklyWorkHours,
-          paid: data.paid,
-          requiredSkills : data.requiredSkills
+          // paid: data.paid,
+          // requiredSkills : data.requiredSkills
 
         });
 
@@ -675,7 +679,7 @@ let selectedCandidate = ref(null);
 let selectedProvince = ref(null);
 let selectedInternshipType = ref(null);
 let selectedEnterprise = ref(null);
-let selectedSectorActivitie = ref(null);
+// let selectedSectorActivitie = ref(null);
 
 // // Fonction pour récupérer l'identifiant et la valeur des candidats
 const handleCandidateChange = (event) => {
@@ -763,11 +767,11 @@ const submitForm = (event) => {
 // Fonction pour envoyer les données du formulaire 
 const sendRequest = async (formData) => {
   try {
-    const baseUrl = 'http://localhost:14114';
+    const baseUrl = 'https://frontend-projet-tableaudebord-6ec58721db10.herokuapp.com';
     const url = props.isRequest ? `${baseUrl}/internship-requests` : `${baseUrl}/internship-offers`;
     const response = isAdding.value
       ? await axios.post(url, formData)
-      : await axios.patch(`${url}/${id.value}`, formData);
+      : await axios.put(`${url}/${id.value}`, formData);
     console.log('Response:', response.data);
     router.push(props.isRequest ? '/app/demandesdestages' : '/app/offresdestages');
   } catch (error) {
@@ -779,22 +783,23 @@ const sendRequest = async (formData) => {
 const handleDataRequest = async () => {
   if (selectedCandidate.value) {
     const formDataRequest = {
-  title: dataToSendToAPI.title,
-  startDate: dataToSendToAPI.startDate,
-  endDate: dataToSendToAPI.endDate,
-  weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
-  skills: dataToSendToAPI.skills.split(',').map(s => s.trim()), // transforme string → array
-  activity_sector_name: dataToSendToAPI.activitySector.name || '',
-  // activity_sector_name: selectedSector?.name || '',
-  internship_type_name: selectedInternshipType.value.name,
-  candidate: {
-    firstName: selectedCandidate.value.firstName,
-    lastName: selectedCandidate.value.lastName,
-    description: selectedCandidate.value.description || "",
-    city: selectedCandidate.value.city,
-    province_name: selectedProvince.value.name // nom
-}
-    }
+      title: dataToSendToAPI.title,  // Titre du stage depuis dataToSendToAPI
+      startDate: dataToSendToAPI.startDate,  // Date de début
+      endDate: dataToSendToAPI.endDate,  // Date de fin
+      weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,  // Heures de travail hebdomadaires
+      skills: dataToSendToAPI.skills.split(',').map(s => s.trim()),  // Transforme la string en tableau (compétences)
+      activity_sector_name: dataToSendToAPI.activitySector.name || '',  // Secteur d'activité (si disponible)
+      internship_type_name: selectedInternshipType.value.name,  // Type de stage depuis la variable selectedInternshipType
+      candidate: {  // Données spécifiques au candidat
+        firstName: selectedCandidate.value.firstName,  // Prénom du candidat
+        lastName: selectedCandidate.value.lastName,  // Nom du candidat
+        description: selectedCandidate.value.description || "",  // Description (peut être vide)
+        city: selectedCandidate.value.city,  // Ville
+        province_name: selectedProvince.value.name // Province (donnée sélectionnée)
+      }
+    };
+
+    // Envoi des données avec la fonction sendRequest
     await sendRequest(formDataRequest);
     console.log("Demande envoyée :", formDataRequest);
   } else {
@@ -802,6 +807,7 @@ const handleDataRequest = async () => {
     console.log('activitySector =', dataToSendToAPI.activitySector);
   }
 };
+
 
 
 // Données envoyées pour les offres 
@@ -826,9 +832,9 @@ const handleDataOffer = async () => {
       startDate: new Date(dataToSendToAPI.startDate).toISOString(),
       endDate: new Date(dataToSendToAPI.endDate).toISOString(),
       province: isAdding.value ? selectedEnterprise.value.name : selectedProvince.value,
-      internshipType: selectedInternshipType.value,
-      paid: dataToSendToAPI.paid,
-      isActive: !isAdding.value
+      internship_type_name: selectedInternshipType.value.name, 
+      // paid: dataToSendToAPI.paid,
+      // isActive: !isAdding.value
     };
     await sendRequest(formDataOffer);
     console.log("Offre envoyée :", formDataOffer);
