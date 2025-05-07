@@ -369,7 +369,7 @@
                 contact: '',
                 activitySector: {
 
-                    _id: '65f8df6040965a2e23d73271',
+                    id: '65f8df6040965a2e23d73271',
                     value: 'Technologies',
                 },
                 website: 'test.com',
@@ -724,7 +724,7 @@
                         city: formData.city,
                         province: {
                             id: formData.provinceId,
-                            value: selectedProvince.value
+                            name: selectedProvince.value
                         },
                         postalCode: formattedPostalCode,
                     };

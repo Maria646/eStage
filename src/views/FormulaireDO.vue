@@ -565,7 +565,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/${id.value}`);
+        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/internship-requests/${id.value}`);
 
         const data = response.data;
 
@@ -625,7 +625,7 @@ onMounted(async () => {
     if (!isAdding.value) {
       isLoading.value = true;
       try {
-        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/${id.value}`);
+        const response = await axios.get(`https://backend-projet-tableaudebord-63f5c0584a2c.herokuapp.com/internship-offers/${id.value}`);
 
         const data = response.data;
         console.log(data);
@@ -787,7 +787,7 @@ const handleDataRequest = async () => {
       startDate: dataToSendToAPI.startDate,  // Date de début
       endDate: dataToSendToAPI.endDate,  // Date de fin
       weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,  // Heures de travail hebdomadaires
-      skills: dataToSendToAPI.skills.split(',').map(s => s.trim()),  // Transforme la string en tableau (compétences)
+      skills: dataToSendToAPI.skills,
       activity_sector_name: dataToSendToAPI.activitySector.name || '',  // Secteur d'activité (si disponible)
       internship_type_name: selectedInternshipType.value.name,  // Type de stage depuis la variable selectedInternshipType
       candidate: {  // Données spécifiques au candidat
@@ -815,24 +815,13 @@ const handleDataOffer = async () => {
   if (selectedEnterprise.value) {
     const formDataOffer = {
       title: dataToSendToAPI.title,
-      description: selectedEnterprise.value.description || "",
+      weeklyWorkHours: dataToSendToAPI.weeklyWorkHours,
       enterprise: {
-        id: selectedEnterprise.value.id,
         name: selectedEnterprise.value.name,
-        image: selectedEnterprise.value.image,
-        address: selectedEnterprise.value.address,
-        postalCode: selectedEnterprise.value.postalCode,
-        province: selectedEnterprise.value.province,
-        city: selectedEnterprise.value.city,
-        phone: selectedEnterprise.value.phone,
-        email: selectedEnterprise.value.email,
-        website: selectedEnterprise.value.website,
-        description: selectedEnterprise.value.description || ""
       },
-      startDate: new Date(dataToSendToAPI.startDate).toISOString(),
-      endDate: new Date(dataToSendToAPI.endDate).toISOString(),
-      province: isAdding.value ? selectedEnterprise.value.name : selectedProvince.value,
-      internship_type_name: selectedInternshipType.value.name, 
+      startDate: dataToSendToAPI.startDate,
+      endDate: dataToSendToAPI.endDate,
+      internship_type_name: selectedInternshipType.value.name,
       // paid: dataToSendToAPI.paid,
       // isActive: !isAdding.value
     };
